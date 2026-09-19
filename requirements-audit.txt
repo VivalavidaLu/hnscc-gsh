@@ -1,0 +1,4 @@
+# Numerical frozen-table checks only; used in this preparation under Python 3.13.
+numpy==2.5.1
+pandas==2.3.3
+scipy==1.18.0

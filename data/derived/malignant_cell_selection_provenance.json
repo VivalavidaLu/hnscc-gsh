@@ -1,0 +1,16 @@
+{
+  "stage_counts": {
+    "pure": 10856,
+    "final": 6165
+  },
+  "subset_checks": {
+    "final_within_pure": true,
+    "all_final_cells_have_malignant_evidence": true
+  },
+  "source_sha256": {
+    "data/processed/malignant_classification.csv": "2b38c0b772197dab5594917f69e64455a682c4dfbc7375fcf8b1f1ae3f43ac02",
+    "data/derived/malignant_PURE_FINAL_cellids.csv": "f7c32fca76029a4db4310caeaa2bc18a5637368b9aefc7012ca42fe0dd1316b6",
+    "data/derived/malignant_DEFINITIVE_FINAL_cellids.csv": "dcf81bfb1449c3a952e332c51d1601c0b4236c0c7130368c814b548acb512c06"
+  },
+  "selection_scope": "The public release represents the final analysis universe directly after epithelial-purity selection."
+}
