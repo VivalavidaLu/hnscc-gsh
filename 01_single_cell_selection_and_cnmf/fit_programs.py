@@ -11,6 +11,10 @@ from cnmf import cNMF
 from cnmf.cnmf import save_df_to_npz
 
 
+EXPECTED_LSCC21_EXCLUSION_TRAINING_CELLS = 3_064
+EXPECTED_LSCC21_EXCLUSION_TOTAL_CELLS = 4_436
+
+
 def select_features(rem):
     genes = rem.var_names.tolist()
     counts = sparse.csr_matrix(rem.X)
@@ -104,8 +108,16 @@ def main():
     if mode != "discovery":
         adata = adata[adata.obs.Patient.ne("LSCC21")].copy()
         training = [c for c in training if c in adata.obs_names]
-        if len(training) != 3064 or adata.n_obs != 4436:
-            raise ValueError("Unexpected exclusion cohort.")
+        if (
+            len(training) != EXPECTED_LSCC21_EXCLUSION_TRAINING_CELLS
+            or adata.n_obs != EXPECTED_LSCC21_EXCLUSION_TOTAL_CELLS
+        ):
+            raise ValueError(
+                f"GSE301741 after LSCC21 exclusion: expected "
+                f"{EXPECTED_LSCC21_EXCLUSION_TRAINING_CELLS} training cells and "
+                f"{EXPECTED_LSCC21_EXCLUSION_TOTAL_CELLS} malignant cells; "
+                f"found {len(training)} and {adata.n_obs}, respectively."
+            )
     if mode == "reselected_features":
         features = select_features(adata)
     parameters = pd.read_csv(args.parameters, sep="\t", index_col=0)

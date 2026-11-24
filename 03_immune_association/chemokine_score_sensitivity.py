@@ -10,7 +10,7 @@ from scipy import stats
 
 from statsmodels.stats.multitest import multipletests
 
-SEED = 20260718
+BOOTSTRAP_SEED = 20260718
 N_BOOT = 5000
 
 
@@ -21,7 +21,7 @@ def boot(d: pd.DataFrame, x: str, y: str) -> tuple[float, float, float]:
         np.flatnonzero(d.Patient.to_numpy() == patient) for patient in patients
     ]
     xv, yv = d[x].to_numpy(float), d[y].to_numpy(float)
-    rng, values = np.random.default_rng(SEED), np.empty(N_BOOT)
+    rng, values = np.random.default_rng(BOOTSTRAP_SEED), np.empty(N_BOOT)
     for i in range(N_BOOT):
         idx = np.concatenate(
             [

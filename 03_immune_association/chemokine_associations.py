@@ -17,7 +17,7 @@ MIN_P1_CELLS = 10
 
 N_BOOT = 5000
 
-SEED = 20260717
+BOOTSTRAP_SEED = 20260717
 
 
 def bh(p: pd.Series) -> pd.Series:
@@ -54,7 +54,7 @@ def cluster_bootstrap(
         np.flatnonzero(d["Patient"].to_numpy() == patient) for patient in patients
     ]
     xv, yv = d[x].to_numpy(float), d[y].to_numpy(float)
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
     values = np.empty(N_BOOT)
     for i in range(N_BOOT):
         draws = rng.integers(0, len(patients), len(patients))

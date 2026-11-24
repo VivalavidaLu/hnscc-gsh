@@ -9,6 +9,8 @@ import re
 from scipy import stats
 from statsmodels.stats.multitest import multipletests
 
+EXPECTED_DEPMAP_24Q2_HNSCC_MODELS = 57
+
 TARGETS = ["GCLC", "GCLM", "GSS", "SLC7A11", "GPX4"]
 
 GSH_GENES = ["SLC7A11", "SLC3A2", "GCLC", "GCLM", "GSS", "GSR", "GPX4"]
@@ -263,9 +265,10 @@ def main():
     gene_effect = read_crispr_targets(crispr_path)
     dependency = (-gene_effect).add_suffix("_dependency_strength")
     common = scores.index.intersection(dependency.index).intersection(hnscc_ids)
-    if len(common) != 57:
+    if len(common) != EXPECTED_DEPMAP_24Q2_HNSCC_MODELS:
         raise RuntimeError(
-            f"Expected 57 HNSCC models in the pinned release, found {len(common)}"
+            f"DepMap Public 24Q2: expected {EXPECTED_DEPMAP_24Q2_HNSCC_MODELS} "
+            f"HNSCC models with expression and CRISPR data, found {len(common)}."
         )
     analysis = scores.loc[common].join(dependency.loc[common])
     meta_columns = [

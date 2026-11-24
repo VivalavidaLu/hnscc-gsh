@@ -12,6 +12,8 @@ from scipy.optimize import nnls
 from cnmf.cnmf import load_df_from_npz
 from statsmodels.stats.multitest import multipletests
 
+EXPECTED_POST_TREATMENT_DONORS_AFTER_LSCC21_EXCLUSION = 12
+
 GENESETS = {
     "GSH_cystine": ["SLC7A11", "SLC3A2", "GCLC", "GCLM", "GSS", "GSR", "GPX4"],
     "AA_transport": ["SLC1A5", "SLC7A5", "SLC38A1", "SLC38A2", "SLC1A4", "SLC7A8"],
@@ -146,7 +148,9 @@ def main():
         weights / weights.sum(1)[:, None], index=a.obs_names, columns=spec.index
     )
     analyses = {run.name + "_native": (u, int(args.program.name))}
-    old_labels = meta.cNMF_program.astype(str).str.extract(r"(\d+)")[0].astype(int)
+    full_cohort_labels = (
+        meta.cNMF_program.astype(str).str.extract(r"(\d+)")[0].astype(int)
+    )
     immune = (
         pd.read_csv(args.immune)
         .set_index("Patient")
@@ -180,8 +184,8 @@ def main():
                 P1_cells=int(x.P1.sum()),
                 all_cells=len(x),
                 patients_with_P1=int(x[x.P1].Patient.nunique()),
-                agreement_with_original_manuscript=float(
-                    np.mean(x.P1.to_numpy() == old_labels.eq(1).to_numpy())
+                p1_membership_agreement_with_full_cohort=float(
+                    np.mean(x.P1.to_numpy() == full_cohort_labels.eq(1).to_numpy())
                 ),
             )
         )
@@ -238,7 +242,14 @@ def main():
             )
             .join(immune[outcomes], validate="one_to_one")
         )
-        assert len(post) == 12 and post[outcomes].notna().all().all()
+        if len(post) != EXPECTED_POST_TREATMENT_DONORS_AFTER_LSCC21_EXCLUSION:
+            raise ValueError(
+                f"GSE301741 after LSCC21 exclusion: expected "
+                f"{EXPECTED_POST_TREATMENT_DONORS_AFTER_LSCC21_EXCLUSION} "
+                f"post-treatment donors, found {len(post)}."
+            )
+        if post[outcomes].isna().any().any():
+            raise ValueError("Immune outcomes are missing for post-treatment donors.")
         post.insert(0, "model", model)
         postrows.append(post.reset_index())
         for exposure in ["P1_fraction", "P1_usage"]:

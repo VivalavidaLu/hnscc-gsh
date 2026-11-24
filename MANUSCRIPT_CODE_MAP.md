@@ -18,3 +18,5 @@
 | Figures 5C–D, S6A–D | 05 · depmap_dependency.py | Primary and target-excluded correlations with Chronos dependency, two GCLC upper-versus-lower quartile contrasts, the nine bootstrap intervals for 5D and S6B, and leave-one-model-out sensitivity. |
 
 Folder 05 also includes paired_assays.py for the paired independent-experiment comparisons in the cell-line panels of Figure 5 and Supplementary Figure 6, including the CCK-8 analysis in S6H. Experimental measurements are available by request to the corresponding authors.
+
+In `assignment_summary.csv`, `p1_membership_agreement_with_full_cohort` is the fraction of retained cells whose P1 membership agrees between the LSCC21-exclusion refit and the full-cohort assignment. Both P1 and non-P1 cells contribute to this fraction.

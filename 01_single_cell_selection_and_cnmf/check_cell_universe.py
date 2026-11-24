@@ -5,6 +5,10 @@ from pathlib import Path
 import pandas as pd
 
 
+EXPECTED_GSE301741_EPITHELIAL_PURITY_CELLS = 10_856
+EXPECTED_DISCOVERY_PROGRAM_COUNTS = [1857, 830, 904, 850, 1081, 643]
+
+
 def read_ids(path):
     data = pd.read_csv(path, usecols=["cell_id"])
     if data.cell_id.isna().any() or data.cell_id.duplicated().any():
@@ -56,8 +60,16 @@ def main():
     ):
         raise ValueError("Inconsistent final cohort membership.")
     counts = usage.idxmax(axis=1).value_counts().sort_index()
-    if len(purity) != 10856 or counts.tolist() != [1857, 830, 904, 850, 1081, 643]:
-        raise ValueError("Counts differ from the discovery cohort.")
+    if len(purity) != EXPECTED_GSE301741_EPITHELIAL_PURITY_CELLS:
+        raise ValueError(
+            f"GSE301741 epithelial-purity set: expected "
+            f"{EXPECTED_GSE301741_EPITHELIAL_PURITY_CELLS} cells, found {len(purity)}."
+        )
+    if counts.tolist() != EXPECTED_DISCOVERY_PROGRAM_COUNTS:
+        raise ValueError(
+            f"GSE301741 discovery projection: expected P1–P6 counts "
+            f"{EXPECTED_DISCOVERY_PROGRAM_COUNTS}, found {counts.tolist()}."
+        )
     print(f"{len(purity)} epithelial-purity cells; {len(final)} final cells.")
     print(counts.to_string())
 

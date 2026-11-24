@@ -1,4 +1,4 @@
-"""Project six frozen spectra in GSE195832 and summarize coherence by donor and phase."""
+"""Project GSE195832 cells onto six fixed discovery spectra and summarize coherence."""
 
 from __future__ import annotations
 import argparse
@@ -41,7 +41,7 @@ def rank_residual_correlation(df, x, y, covariates):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Project six frozen spectra in GSE195832 and summarize coherence by donor and phase."
+        description="Project GSE195832 cells onto six fixed discovery spectra and summarize coherence by donor and phase."
     )
     parser.add_argument(
         "--matrices",
