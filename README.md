@@ -12,6 +12,8 @@ Code for *SLC7A11/GCLC-associated glutathione metabolism in relation to CXCL10 e
 
 The [panel map](MANUSCRIPT_CODE_MAP.md) maps manuscript figures to their analysis scripts and identifies steps that require additional inputs.
 
+See [Analysis provenance](ANALYSIS_PROVENANCE.md) for the program assignment check and the scope of the figure workflows.
+
 ### Running an analysis
 
 Install the analysis dependencies using `python -m pip install -r requirements.txt`. Supply the [analysis-ready inputs](DATA_SOURCES.md) through command-line arguments. Each analysis entry point supports `--help`. For example, after preparing one row per patient and phase with `aggregate_response_scores.py`:
